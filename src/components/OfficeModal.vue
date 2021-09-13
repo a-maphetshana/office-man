@@ -144,6 +144,7 @@ export default {
     if (this.editOffice) {
       const currentOffice = this.currentOfficeArray[0];
       this.docId = currentOffice.docId;
+      this.officeId = currentOffice.officeId;
       this.officeName = currentOffice.officeName;
       this.officeEmail = currentOffice.officeEmail;
       this.officeLocation = currentOffice.officeLocation;
@@ -176,13 +177,12 @@ export default {
         alert("Max number of occupants has been reached!");
         return;
       }
+
       this.officeStaffList.push({
         id: uid(24),
-        // officeId: this.officeId,
+        officeId: this.officeId,
         firstName: "",
-        lastName: "",
-        price: 0,
-        total: 0,
+        lastName: ""
       });
     },
 
