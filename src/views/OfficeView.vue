@@ -27,7 +27,32 @@
       </div>
     </div>
 
-    <div class="staff-search flex"></div>
+    <div
+      v-if="currentOffice.officeStaffList.length > 0"
+      class="staff-search flex flex-column"
+    >
+      <div class="input flex">
+        <input
+          required
+          type="text"
+          id="filterText"
+          v-model="filterText"
+          placeholder="Search"
+        />
+      </div>
+      <div class="flex">
+        <div class="left flex">
+          Staff Members {{ currentOffice.officeStaffList.length }}/{{
+            currentOffice.officeCapacity
+          }}
+        </div>
+        <div class="right">
+          <div @click="newStaff" class="button">
+            <span>Add Office</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div
       v-if="currentOffice.officeStaffList.length > 0"
@@ -35,14 +60,16 @@
     >
       <div class="staff-members">
         <div
-          v-for="(item, index) in currentOffice.officeStaffList"
+          v-for="(staff, index) in filteredData"
           :key="index"
           class="item flex"
         >
           <div class="staff-avatar">
             <i class="fas fa-fw fa-user fa-2x"></i>
           </div>
-          <div>{{ item.firstName }} {{ item.lastName }}</div>
+          <div class="staff-name">
+            {{ staff.firstName }} {{ staff.lastName }}
+          </div>
           <div>
             <i class="fas fa-fw fa-ellipsis-v"></i>
           </div>
@@ -52,9 +79,13 @@
     <div v-else class="empty flex flex-column">
       <img src="@/assets/illustration-empty.svg" alt="" />
       <h3>There is nothing here</h3>
-      <p>
-        Add office by clicking the Add Staff button and get started
-      </p>
+      <p>Add office by clicking the Add Staff button and get started</p>
+    </div>
+    <div
+      v-if="filterText != null && filteredData.length === 0"
+      class="empty-search flex flex-column"
+    >
+      <h3>Search yielded no results...</h3>
     </div>
   </div>
 </template>
@@ -66,6 +97,7 @@ export default {
   data() {
     return {
       currentOffice: null,
+      filterText: null,
     };
   },
   created() {
@@ -96,7 +128,18 @@ export default {
     },
   },
   computed: {
-    ...mapState(["currentOfficeArray", "editOffice"]),
+    ...mapState(["currentOfficeArray", "editOffice", "currentOffice"]),
+    filteredData() {
+      return this.currentOffice.officeStaffList.filter((staff) => {
+        if (this.filterText != null) {
+          return (
+            staff.firstName.includes(this.filterText) ||
+            staff.lastName.includes(this.filterText)
+          );
+        }
+        return staff;
+      });
+    },
   },
   watch: {
     editOffice() {
@@ -185,19 +228,52 @@ export default {
     }
   }
 
+  .staff-search {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #fff;
+    padding: 12px;
+
+    .input {
+      margin: 5px;
+    }
+
+    input {
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid #1e2139;
+      color: #000;
+      border-radius: 4px;
+      padding: 4px 4px;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+    .button {
+      padding: 8px 10px;
+      background-color: #252945;
+      border-radius: 40px;
+    }
+    .left {
+      flex: 5;
+      justify-content: flex-start;
+    }
+    .right {
+      flex: 1;
+      justify-content: flex-end;
+    }
+  }
+
   .bottom {
     margin-top: 20px;
     border-radius: 20px 20px 0 0;
 
-    .staff-search {
-      margin-bottom: 5px;
-      font-size: 13px;
-      color: #fff;
-      background-color: #252945;
-      padding: 12px;
-    }
-
     .staff-members {
+      text-transform: capitalize;
+      font-weight: bold;
       .heading {
         color: #dfe3fa;
         font-size: 12px;
@@ -246,6 +322,10 @@ export default {
         div:last-child {
           text-align: right;
         }
+
+        .staff-name {
+          padding-top: 5px;
+        }
       }
     }
   }
@@ -270,6 +350,16 @@ export default {
       font-size: 12px;
       font-weight: 300;
       margin-top: 16px;
+    }
+  }
+
+  .empty-search {
+    margin-top: 40px;
+    align-items: center;
+    color: #fff;
+    h3 {
+      font-size: 20px;
+      margin-top: 40px;
     }
   }
 }
