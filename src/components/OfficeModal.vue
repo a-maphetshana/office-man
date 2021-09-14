@@ -20,7 +20,7 @@
         </div>
         <div class="input flex flex-column">
           <label for="officeTell">Office Tell</label>
-          <input required type="text" id="officeTell" v-model="officeTell" />
+          <input type="text" id="officeTell" v-model="officeTell" />
         </div>
 
         <div class="input flex flex-column">
@@ -43,7 +43,7 @@
         </div>
         <div class="input flex flex-column">
           <label for="officeColor">Office Color</label>
-          <select required type="text" id="officeColor" v-model="officeColor">
+          <select type="text" id="officeColor" v-model="officeColor">
             <option value="Black">Black</option>
             <option value="Blue">Blue</option>
             <option value="Navy">Navy</option>
@@ -132,7 +132,7 @@ export default {
       officeEmail: null,
       officeLocation: null,
       officeTell: null,
-      officeColor: null,
+      officeColor: "Black",
       officeStaffList: [],
       officeCapacity: 0,
     };

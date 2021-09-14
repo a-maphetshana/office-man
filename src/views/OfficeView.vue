@@ -27,9 +27,7 @@
       </div>
     </div>
 
-    <div
-      v-if="currentOffice.officeStaffList.length > 0"
-      class="staff-search flex flex-column"
+    <div class="staff-search flex flex-column"
     >
       <div class="input flex">
         <input
@@ -48,7 +46,7 @@
         </div>
         <div class="right">
           <div @click="newStaff" class="button">
-            <span>Add Office</span>
+            <span>Add Staff</span>
           </div>
         </div>
       </div>
@@ -82,7 +80,7 @@
       <p>Add office by clicking the Add Staff button and get started</p>
     </div>
     <div
-      v-if="filterText != null && filteredData.length === 0"
+      v-if="currentOffice.officeStaffList.length > 0 && filterText != null && filteredData.length === 0"
       class="empty-search flex flex-column"
     >
       <h3>Search yielded no results...</h3>
@@ -133,8 +131,8 @@ export default {
       return this.currentOffice.officeStaffList.filter((staff) => {
         if (this.filterText != null) {
           return (
-            staff.firstName.includes(this.filterText) ||
-            staff.lastName.includes(this.filterText)
+            staff.firstName.toLowerCase().includes(this.filterText.toLowerCase()) ||
+            staff.lastName.toLowerCase().includes(this.filterText.toLowerCase())
           );
         }
         return staff;
