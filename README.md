@@ -1,4 +1,7 @@
-# office
+# office man
+
+The system allows users to create and manage office space, crafted with Vuejs and firebase.
+
 
 ## Project setup
 ```
